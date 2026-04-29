@@ -228,3 +228,78 @@ GET /health   → {"status": "ok", "model": "...", "api_key_configured": true}
 GET /docs     → Swagger UI
 GET /redoc    → ReDoc
 ```
+
+
+
+
+
+
+
+
+
+--- 
+---
+---
+---
+---
+## Post Submission Improvements
+## Evaluation Results
+
+**Final Score:** **14/14 (100%)**  
+**Status:** Cases 1–14 ✅ PASS [`Check with eval_results.json`]
+
+After prompt engineering refinements, the system achieved full accuracy across all test cases.
+
+---
+
+
+### 1. Late Delivery Priority Override
+If the customer no longer wanted the item because it arrived late, the system now forces:
+
+- **resolution:** refund  
+- **reason_category:** late_delivery  
+
+This prevents confusion with `changed_mind`.
+
+---
+
+### 2. Safety Concern Priority Override
+Any mention of injury, sickness, contamination, or dangerous product behavior now forces:
+
+- **resolution:** escalate  
+- **reason_category:** defective  
+
+Improves customer safety handling.
+
+---
+
+### 3. Vague Input Confidence Penalty
+If the complaint has no clear reason, confidence is capped at:
+
+- **confidence ≤ 0.60**
+
+This prevents overconfident responses.
+
+---
+
+### 4. Policy Bug Fix
+Customer text alone can no longer trigger `out_of_policy`.
+
+Example:  
+“arrived 3 weeks late” is treated as **late delivery**, not a policy violation.
+
+This avoids false denials.
+
+---
+
+## Summary
+
+These refinements improved:
+
+- accuracy  
+- fairness  
+- uncertainty handling  
+- escalation safety  
+- production readiness
+
+**Final Result:** **14/14 PASS**

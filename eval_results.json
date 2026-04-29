@@ -1,8 +1,8 @@
 {
   "summary": {
-    "passed": 11,
+    "passed": 14,
     "total": 14,
-    "pct": 78
+    "pct": 100
   },
   "cases": [
     {
@@ -14,10 +14,10 @@
       "result": {
         "resolution": "refund",
         "category": "defective",
-        "reasoning": "The stroller arrived with a cracked wheel and cannot be folded, indicating a clear defect on delivery, which warrants a refund.",
+        "reasoning": "The stroller arrived broken with a cracked wheel and cannot fold, indicating a defective product that warrants a full refund.",
         "confidence": 0.96,
-        "reply_en": "We're very sorry to hear that your stroller arrived broken — that's certainly not the experience we aim to provide. We'll process a full refund for you right away, and you should see the amount returned within 3–5 business days.",
-        "reply_ar": "نعتذر بشدة لأن عربة الأطفال وصلت مكسورة — هذا ليس ما نتمنى لكِ. سنقوم بمعالجة استرداد كامل للمبلغ فوراً، وستصلكِ المبالغ خلال 3 إلى 5 أيام عمل.",
+        "reply_en": "We're very sorry to hear that your stroller arrived broken — that's certainly not the experience we want for you. We'll process a full refund right away and you’ll receive a confirmation email shortly.",
+        "reply_ar": "نأسف جداً لأن عربة الأطفال وصلت مكسورة، وهذا ليس ما نتمنى لكِ. سنقوم بمعالجة استرداد كامل للمبلغ فوراً وستصلكِ رسالة تأكيد عبر البريد الإلكتروني.",
         "language_detected": "en",
         "order_id": null
       }
@@ -31,10 +31,10 @@
       "result": {
         "resolution": "exchange",
         "category": "wrong_item",
-        "reasoning": "The customer received the incorrect diaper size and wants to swap for the correct size, which fits the exchange criteria.",
+        "reasoning": "The customer received the incorrect diaper size and wants to swap for the correct size, which fits the exchange policy for wrong items.",
         "confidence": 0.96,
-        "reply_en": "We're sorry for the mix‑up with your diaper size. We'll arrange an exchange for the correct size 3 diapers right away and provide a prepaid return label.",
-        "reply_ar": "نعتذر عن الخطأ في حجم الحفاضات التي وصلتكِ. سنقوم بترتيب استبدالها بالحجم 3 المناسب فوراً وسنرسل لكِ بطاقة شحن مدفوعة مسبقاً لإرجاع الحجم الخاطئ.",
+        "reply_en": "We're sorry for the mix‑up with your diaper size. We'll arrange an exchange for the correct size 3 diapers right away and provide you with a prepaid return label.",
+        "reply_ar": "نعتذر عن الخطأ في حجم الحفاضات التي وصلتك. سنقوم بترتيب استبدالها بالحجم 3 المناسب فوراً وسنرسل لك ملصق إرجاع مدفوع مسبقاً.",
         "language_detected": "en",
         "order_id": null
       }
@@ -48,10 +48,10 @@
       "result": {
         "resolution": "store_credit",
         "category": "changed_mind",
-        "reasoning": "The customer explicitly states they no longer want the item and wants to return it, which matches a buyer's remorse scenario.",
-        "confidence": 0.96,
-        "reply_en": "We understand that plans can change – no worries! We'll process a store credit for your purchase, and you can use it on any future Mumzworld order.",
-        "reply_ar": "نحن نتفهم أن الأمور قد تتغير – لا مشكلة! سنقوم بتحويل قيمة طلبك إلى رصيد في المتجر لتستفيد منه في أي طلب مستقبلي من مُمزورلد.",
+        "reasoning": "The customer explicitly states they changed their mind and no longer need the item, which qualifies for a store credit return.",
+        "confidence": 0.95,
+        "reply_en": "We understand that sometimes plans change. We'll process a store credit for your purchase, and you can use it for any future order at your convenience.",
+        "reply_ar": "نفهم أن الأمور قد تتغير أحيانًا. سنقوم بتحويل قيمة طلبك إلى رصيد في المتجر لتستفيد منه في أي طلب مستقبلي يناسبك.",
         "language_detected": "en",
         "order_id": null
       }
@@ -65,10 +65,10 @@
       "result": {
         "resolution": "refund",
         "category": "damaged_shipping",
-        "reasoning": "The customer received a crushed box and a visibly cracked car seat, indicating damage during shipping, which qualifies for a refund.",
+        "reasoning": "The customer reports the box was crushed in transit and the baby car seat has a visible crack, indicating damage caused by shipping.",
         "confidence": 0.96,
-        "reply_en": "We're very sorry to hear that your baby car seat arrived damaged. We'll process a full refund for you right away and you’ll receive a confirmation email shortly.",
-        "reply_ar": "نأسف جداً لوصول مقعد السيارة للطفل وهو متضرر. سنقوم بمعالجة استرداد كامل لك فوراً وستصلك رسالة تأكيد على بريدك الإلكتروني.",
+        "reply_en": "We're very sorry to hear that your baby car seat arrived damaged due to a crushed box. We'll process a full refund for you right away and you’ll receive a confirmation email shortly.",
+        "reply_ar": "نعتذر بشدة لأن عربة الطفل وصلت متضررة بسبب الصندوق المطحون. سنقوم بمعالجة استرداد كامل لك فوراً وستصلك رسالة تأكيد عبر البريد الإلكتروني.",
         "language_detected": "en",
         "order_id": null
       }
@@ -77,17 +77,15 @@
       "id": 5,
       "desc": "EN – late delivery, bought elsewhere",
       "input": "My order arrived 3 weeks late. I already bought it from another store and no longer need this.",
-      "passed": false,
-      "issues": [
-        "resolution 'store_credit' ≠ expected 'refund'"
-      ],
+      "passed": true,
+      "issues": [],
       "result": {
-        "resolution": "store_credit",
+        "resolution": "refund",
         "category": "late_delivery",
-        "reasoning": "Customer received the order late and no longer needs it, which fits a changed‑mind scenario; a store credit is appropriate.",
-        "confidence": 0.92,
-        "reply_en": "We’re sorry your order arrived later than expected and that you had to purchase elsewhere. We’ll issue a store credit for the full amount, which you can use on any future Mumzworld purchase.",
-        "reply_ar": "نعتذر عن تأخر وصول طلبك واضطرارك للشراء من مكان آخر. سنضيف رصيداً على حسابك يساوي قيمة الطلب لتستفيد منه في أي عملية شراء مستقبلية من مُمزورلد.",
+        "reasoning": "The customer states the order arrived 3 weeks late and they no longer need it, which triggers the late delivery rule requiring a refund.",
+        "confidence": 0.96,
+        "reply_en": "We’re very sorry your order arrived so late and that you had to purchase elsewhere. We’ll process a full refund for you right away and you’ll receive a confirmation email shortly.",
+        "reply_ar": "نعتذر بشدة لتأخر وصول طلبك لهذا الوقت ولأنك اضطررت للشراء من مكان آخر. سنقوم بإجراء استرداد كامل لك الآن وستصلك رسالة تأكيد عبر البريد الإلكتروني.",
         "language_detected": "en",
         "order_id": null
       }
@@ -101,10 +99,10 @@
       "result": {
         "resolution": "refund",
         "category": "defective",
-        "reasoning": "The customer states the product arrived completely broken and non‑functional and explicitly requests a refund, which matches the defective‑item policy.",
+        "reasoning": "The customer reports the product arrived completely broken and non‑functional, which qualifies as a defective item requiring a refund.",
         "confidence": 0.96,
-        "reply_en": "We're very sorry to hear that your product arrived broken and doesn't work at all. We'll process a full refund for you right away and you’ll receive a confirmation email shortly.",
-        "reply_ar": "نأسف جداً لأن المنتج وصل مكسور تمامًا ولا يعمل. سنقوم بمعالجة استرداد كامل لمبلغك فورًا وستصلك رسالة تأكيد على بريدك الإلكتروني.",
+        "reply_en": "We're very sorry to hear that the product arrived broken and doesn't work at all. We'll process a full refund for you right away and you’ll receive a confirmation email shortly.",
+        "reply_ar": "نأسف جداً لأن المنتج وصل مكسور تمامًا ولا يعمل على الإطلاق. سنقوم بمعالجة استرداد كامل لمبلغك فورًا وستصلك رسالة تأكيد بالبريد الإلكتروني.",
         "language_detected": "ar",
         "order_id": null
       }
@@ -118,10 +116,10 @@
       "result": {
         "resolution": "refund",
         "category": "wrong_item",
-        "reasoning": "The customer received a completely different product than ordered, which qualifies for a refund under the wrong‑item policy.",
+        "reasoning": "The customer received a completely different product than ordered, which qualifies for a refund under the wrong item policy.",
         "confidence": 0.96,
-        "reply_en": "We're very sorry you received the wrong product – that's certainly not what you expected. We'll process a full refund for you right away and send you a confirmation email shortly.",
-        "reply_ar": "نعتذر لكِ بشدة لأنكِ استلمتي منتج مختلف تمامًا عن طلبكِ – هذا غير مقبول. سنقوم بإجراء استرداد كامل للمبلغ فورًا وسنرسل لكِ رسالة تأكيد بالبريد الإلكتروني.",
+        "reply_en": "We're very sorry you received the wrong product — that's certainly not what you expected. We'll process a full refund for you right away and will send you a confirmation email shortly.",
+        "reply_ar": "نعتذر لكِ بشدة لأنكِ استلمتِ منتجًا مختلفًا تمامًا عما طلبتيه، وهذا غير مقبول. سنقوم بمعالجة استرداد كامل لمبلغكِ فورًا وسنرسل لكِ رسالة تأكيد بالبريد الإلكتروني.",
         "language_detected": "ar",
         "order_id": null
       }
@@ -135,10 +133,10 @@
       "result": {
         "resolution": "store_credit",
         "category": "changed_mind",
-        "reasoning": "The customer states they changed their mind and no longer need the product, which matches a soft return scenario.",
-        "confidence": 0.96,
-        "reply_en": "We understand that you no longer need the item. We've processed a store credit for you, which you can use on any future purchase with Mumzworld.",
-        "reply_ar": "نحن نتفهم أنك غيرتِ رأيك ولا تحتاجين المنتج الآن. تم إنشاء رصيد في حسابك لاستخدامه في أي عملية شراء مستقبلية من مُمزورلد.",
+        "reasoning": "The customer states they changed their mind and no longer need the product, which fits the changed_mind category and warrants a store credit.",
+        "confidence": 0.88,
+        "reply_en": "We understand that you no longer need the item. We'll process a store credit for you right away, and you can use it on any future purchase.",
+        "reply_ar": "نحن نتفهم أنك غيرتِ رأيك ولا تحتاجين المنتج الآن. سنقوم بتحويل رصيد للمتجر لكِ فوراً لتستفيدين منه في أي عملية شراء مستقبلية.",
         "language_detected": "ar",
         "order_id": null
       }
@@ -147,17 +145,15 @@
       "id": 9,
       "desc": "EN – safety concern → must escalate",
       "input": "My baby drank from this bottle and got sick. I think it might be contaminated.",
-      "passed": false,
-      "issues": [
-        "category 'other' ≠ expected 'defective'"
-      ],
+      "passed": true,
+      "issues": [],
       "result": {
         "resolution": "escalate",
-        "category": "other",
-        "reasoning": "The customer reports a possible contamination that caused illness, which is a safety and potential legal issue requiring immediate escalation.",
+        "category": "defective",
+        "reasoning": "The customer reports possible contamination that made the baby sick, which is a safety/injury risk requiring escalation.",
         "confidence": 0.96,
-        "reply_en": "We're very sorry to hear your baby fell ill and understand your concern. For your safety, we are escalating this matter to our senior team right away and will contact you shortly to resolve it.",
-        "reply_ar": "نأسف جداً لسماع أن طفلكم مريض ونفهم قلقكم. حفاظاً على سلامتكم، سنقوم بتحويل الموضوع فوراً إلى فريقنا المتخصص وسنتواصل معكم قريباً لحل المشكلة.",
+        "reply_en": "We're very sorry to hear your baby fell ill after using the bottle. This is a serious safety concern and we will immediately forward this to our specialist team for urgent investigation.",
+        "reply_ar": "نعتذر بشدة لسماع أن طفلكم مرض بعد استخدام الزجاجة. هذا أمر خطير وسنحوّله فوراً إلى فريق المتخصصين لدينا للتحقق العاجل.",
         "language_detected": "en",
         "order_id": null
       }
@@ -171,10 +167,10 @@
       "result": {
         "resolution": "escalate",
         "category": "other",
-        "reasoning": "The customer threatens legal action and demands immediate money return, indicating a serious dispute that requires higher-level handling.",
+        "reasoning": "The customer threatens legal action, indicating extreme distress and a potential safety/legal issue, requiring escalation.",
         "confidence": 0.96,
-        "reply_en": "We understand your concern and take this matter seriously. Our senior team will review your request and get back to you as soon as possible.",
-        "reply_ar": "نفهم قلقك ونتعامل مع الأمر بجدية. سيقوم فريقنا المتخصص بمراجعة طلبك والرد عليك في أقرب وقت.",
+        "reply_en": "We’re very sorry for the frustration you’re experiencing. We take your concerns seriously and have escalated this matter to our senior team for immediate review.",
+        "reply_ar": "نأسف جداً للإحباط الذي تشعرون به. نأخذ ملاحظاتكم بجدية وقد تم تحويل الأمر إلى فريقنا المتخصص لمراجعة الحالة فوراً.",
         "language_detected": "ar",
         "order_id": null
       }
@@ -188,10 +184,10 @@
       "result": {
         "resolution": "escalate",
         "category": "other",
-        "reasoning": "The message is nonsensical and provides no clear reason for a return, making it impossible to determine an appropriate action.",
+        "reasoning": "The message is nonsensical and provides no actionable information, requiring human intervention.",
         "confidence": 0.25,
-        "reply_en": "We're sorry, but we couldn't understand your request. Could you please provide more details so we can assist you further?",
-        "reply_ar": "نعتذر، لكن لم نستطع فهم طلبك. هل يمكنك توضيح المزيد حتى نتمكن من مساعدتك؟",
+        "reply_en": "We're sorry, but we couldn't understand your request. Could you please provide more details so we can assist you?",
+        "reply_ar": "نعتذر، لكن لم نستطع فهم رسالتك. هل يمكنك توضيح المطلوب حتى نتمكن من مساعدتك؟",
         "language_detected": "other",
         "order_id": null
       }
@@ -200,17 +196,15 @@
       "id": 12,
       "desc": "EN – very vague, confidence should be low",
       "input": "I just don't like it.",
-      "passed": false,
-      "issues": [
-        "confidence 0.96 above ceiling 0.7 (overconfident)"
-      ],
+      "passed": true,
+      "issues": [],
       "result": {
         "resolution": "store_credit",
         "category": "changed_mind",
-        "reasoning": "The customer states they simply don't like the product, indicating a change of mind without any defect or error.",
-        "confidence": 0.96,
-        "reply_en": "We’re sorry the item isn’t what you hoped for. We can issue a store credit for you to use on a future purchase.",
-        "reply_ar": "نأسف لأن المنتج لم يلقَ إعجابك. يمكننا إصدار رصيد متجر لتستفيد منه في عملية شراء لاحقة.",
+        "reasoning": "The customer states they simply don't like the product, indicating a change of mind with no defect or other issue.",
+        "confidence": 0.55,
+        "reply_en": "We’re sorry to hear the item isn’t what you expected. We’ll issue a store credit for you right away so you can choose something else you’ll love.",
+        "reply_ar": "نأسف لأن المنتج لم يلقَ إعجابك. سنقوم بإصدار رصيد للمتجر فوراً لتتمكني من اختيار شيء آخر يناسبك.",
         "language_detected": "en",
         "order_id": null
       }
@@ -224,10 +218,10 @@
       "result": {
         "resolution": "refund",
         "category": "defective",
-        "reasoning": "The customer says the stroller is broken and not working, which is a clear defect and they request a refund.",
-        "confidence": 0.92,
+        "reasoning": "The customer reports the stroller is broken and non‑functional and explicitly requests a refund, which matches a defective‑item case.",
+        "confidence": 0.93,
         "reply_en": "We're very sorry to hear that the stroller arrived broken and isn't working. We'll process a full refund for you right away and you’ll receive a confirmation email shortly.",
-        "reply_ar": "نعتذر لكِ كثيراً لأن العربة وصلت معطوبة ولا تعمل. سنقوم بمعالجة استرداد كامل لكِ فوراً وستصلكِ رسالة تأكيد على بريدكِ الإلكتروني.",
+        "reply_ar": "نأسف جداً لأن العربة وصلت معطوبة ولا تعمل. سنقوم بمعالجة استرداد كامل لمبلغك فوراً وستصلك رسالة تأكيد بالبريد الإلكتروني.",
         "language_detected": "en",
         "order_id": null
       }
@@ -241,10 +235,10 @@
       "result": {
         "resolution": "store_credit",
         "category": "changed_mind",
-        "reasoning": "The customer wants to return an untouched baby formula after 35 days, which is outside the 14‑day return window, so a refund or exchange is not allowed; a store credit is the appropriate option.",
-        "confidence": 0.94,
-        "reply_en": "We understand you’d like to return the baby formula. As the request is beyond our 14‑day return window, we can offer you store credit for the purchase amount, which you can use on any future Mumzworld order.",
-        "reply_ar": "نفهم رغبتك في إرجاع تركيبة الطفل. بما أن الطلب جاء بعد فترة الإرجاع المحددة بـ 14 يوم، يمكننا تقديم رصيد متجر بقيمة المشتريات لتستفيد منه في طلبات مستقبلية من مُمزورلد.",
+        "reasoning": "The customer wants to return an untouched baby formula after the return window (out_of_policy), which qualifies only for store credit per policy.",
+        "confidence": 0.85,
+        "reply_en": "We understand you’d like to return the baby formula. As the return request is outside our standard window, we can offer you store credit to use on any future purchase.",
+        "reply_ar": "نفهم رغبتك في إرجاع تركيبة الطفل. بما أن طلب الإرجاع خارج فترة الإرجاع المتاحة، يمكننا تقديم رصيد متجاري لتستفيد منه في أي عملية شراء مستقبلية.",
         "language_detected": "en",
         "order_id": "ORD-1003"
       }
