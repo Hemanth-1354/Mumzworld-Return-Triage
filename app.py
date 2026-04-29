@@ -14,7 +14,9 @@ from typing import Any
 import httpx
 from fastapi import FastAPI, HTTPException, Request
 from fastapi.responses import HTMLResponse, JSONResponse
+from fastapi.responses import HTMLResponse, JSONResponse
 from fastapi.staticfiles import StaticFiles
+from pydantic import ValidationError
 
 from models import ReturnRequest, TriageResult
 from prompts import build_messages
@@ -41,6 +43,13 @@ app.mount("/static", StaticFiles(directory=str(STATIC_DIR)), name="static")
 OPENROUTER_API_KEY: str = os.getenv("OPENROUTER_API_KEY", "")
 MODEL: str = os.getenv("MODEL", "qwen/qwen-2.5-72b-instruct:free")
 OPENROUTER_BASE: str = "https://openrouter.ai/api/v1"
+
+# Load mock database
+MOCK_DB_PATH = Path(__file__).parent / "mock_orders.json"
+try:
+    MOCK_ORDERS = json.loads(MOCK_DB_PATH.read_text(encoding="utf-8"))
+except FileNotFoundError:
+    MOCK_ORDERS = {}
 
 
 # ---------------------------------------------------------------------------
@@ -113,7 +122,17 @@ async def triage_return(req: ReturnRequest) -> TriageResult:
             detail="OPENROUTER_API_KEY environment variable is not set. See README.",
         )
 
-    messages = build_messages(req.text)
+    # Lightweight RAG / Context Injection:
+    # We fetch the order details from our mock DB based on order_id.
+    # This allows the model to enforce business rules (e.g. denying refunds for out-of-policy items)
+    # dynamically, rather than relying strictly on the customer's self-reported text.
+    order_data = None
+    if req.order_id and req.order_id in MOCK_ORDERS:
+        order_data = MOCK_ORDERS[req.order_id]
+        order_data["order_id"] = req.order_id
+
+    # Build the conversation history (System Prompt + One-Shot Example + User Input + RAG Context)
+    messages = build_messages(req.text, order_data)
 
     # Call OpenRouter
     async with httpx.AsyncClient(timeout=45.0) as client:
@@ -144,13 +163,29 @@ async def triage_return(req: ReturnRequest) -> TriageResult:
             detail=f"OpenRouter returned HTTP {resp.status_code}: {resp.text[:400]}",
         )
 
-    raw_content: str = resp.json()["choices"][0]["message"]["content"]
+    resp_data = resp.json()
+    choices = resp_data.get("choices", [])
+    if not choices:
+        raise HTTPException(502, detail=f"Model returned no choices. Response: {resp.text[:400]}")
+    
+    raw_content = choices[0].get("message", {}).get("content")
+    if raw_content is None:
+        raw_content = ""
 
     # Parse + validate
     try:
         data = extract_json(raw_content)
         result = TriageResult(**data, order_id=req.order_id)
         return result
+    except ValidationError as exc:
+        raise HTTPException(
+            422,
+            detail={
+                "error": "Model output parsed but failed schema validation",
+                "detail": str(exc.errors()),
+                "raw_preview": raw_content[:400],
+            },
+        )
     except (ValueError, KeyError) as exc:
         raise HTTPException(
             422,
@@ -160,11 +195,11 @@ async def triage_return(req: ReturnRequest) -> TriageResult:
                 "raw_preview": raw_content[:400],
             },
         )
-    except Exception as exc:  # Pydantic validation errors
+    except Exception as exc:
         raise HTTPException(
             422,
             detail={
-                "error": "Model output parsed but failed schema validation",
+                "error": "An unexpected error occurred during parsing",
                 "detail": str(exc),
                 "raw_preview": raw_content[:400],
             },

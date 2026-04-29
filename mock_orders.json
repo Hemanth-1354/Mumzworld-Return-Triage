@@ -1,0 +1,34 @@
+{
+  "ORD-1001": {
+    "item_name": "Premium Baby Stroller",
+    "price_aed": 1200,
+    "purchase_days_ago": 5,
+    "return_window_days": 14,
+    "policy_status": "in_policy",
+    "customer_segment": "vip"
+  },
+  "ORD-1002": {
+    "item_name": "Newborn Diapers Size 3",
+    "price_aed": 85,
+    "purchase_days_ago": 10,
+    "return_window_days": 14,
+    "policy_status": "in_policy",
+    "customer_segment": "standard"
+  },
+  "ORD-1003": {
+    "item_name": "Baby Formula 400g",
+    "price_aed": 65,
+    "purchase_days_ago": 35,
+    "return_window_days": 14,
+    "policy_status": "out_of_policy",
+    "customer_segment": "standard"
+  },
+  "ORD-1004": {
+    "item_name": "Wooden Crib",
+    "price_aed": 850,
+    "purchase_days_ago": 2,
+    "return_window_days": 14,
+    "policy_status": "in_policy",
+    "customer_segment": "standard"
+  }
+}

@@ -24,6 +24,10 @@ Your job: read a customer's return/complaint message and produce a structured tr
 ## Category rules (pick exactly one)
 defective | wrong_item | changed_mind | damaged_shipping | late_delivery | other
 
+## Business Policy Rules
+- If order context is provided and `policy_status` is "out_of_policy" (e.g. >14 days), NEVER issue a refund or exchange. You must return `store_credit` or `escalate`, and explain this in the reasoning and replies.
+- If `policy_status` is "in_policy", proceed normally based on the customer reason.
+
 ## Confidence rules
 - > 0.80 → clear-cut case, strong signal
 - 0.50 – 0.80 → some ambiguity present
@@ -70,15 +74,22 @@ RESPONSE_SCHEMA = """\
 """
 
 
-def build_messages(customer_text: str) -> list[dict]:
+import json
+
+def build_messages(customer_text: str, order_data: dict | None = None) -> list[dict]:
     """
     Build the messages array for the chat completion API.
     Uses a system prompt + one-shot example + the actual user input.
     """
+    context_str = ""
+    if order_data:
+        context_str = f"Order Context: {json.dumps(order_data)}\n"
+
     user_content = (
         f"{ONE_SHOT_EXAMPLE}\n"
         f"---\n"
         f"Now triage this return reason:\n"
+        f"{context_str}"
         f"\"{customer_text}\"\n\n"
         f"Respond with a JSON object matching this schema:\n{RESPONSE_SCHEMA}"
     )

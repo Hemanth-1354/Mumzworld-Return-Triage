@@ -28,9 +28,10 @@ class TestCase:
     text: str
     expect_resolution: Optional[str]       # None = any resolution acceptable
     expect_category: str
-    expect_lang: str
+    expect_lang: Optional[str] = None
     expect_min_confidence: Optional[float] = None   # must be >= this
     expect_max_confidence: Optional[float] = None   # must be <= this (for vague inputs)
+    order_id: Optional[str] = None
 
 
 TEST_CASES: list[TestCase] = [
@@ -110,6 +111,20 @@ TEST_CASES: list[TestCase] = [
         expect_resolution="store_credit", expect_category="changed_mind", expect_lang="en",
         expect_max_confidence=0.70,   # vague input → model must not be overconfident
     ),
+    # ── Context / Advanced cases ───────────────────────────────────────────
+    TestCase(
+        id=13, desc="Mixed Language (Arabizi)",
+        text="The stroller is kherban and doesn't work, please refund my floos.",
+        expect_resolution="refund", expect_category="defective", expect_lang=None,
+        expect_min_confidence=0.70,
+    ),
+    TestCase(
+        id=14, desc="Policy Violation – Out of 14-day window",
+        text="This baby formula is untouched but I want to return it.",
+        expect_resolution="store_credit", expect_category="changed_mind", expect_lang="en",
+        expect_min_confidence=0.70,
+        order_id="ORD-1003", # ORD-1003 is out_of_policy (35 days old)
+    ),
 ]
 
 
@@ -131,7 +146,7 @@ def score_case(case: TestCase, result: dict) -> tuple[bool, list[str]]:
             f"category '{result.get('category')}' ≠ expected '{case.expect_category}'"
         )
 
-    if result.get("language_detected") != case.expect_lang:
+    if case.expect_lang and result.get("language_detected") != case.expect_lang:
         issues.append(
             f"lang '{result.get('language_detected')}' ≠ expected '{case.expect_lang}'"
         )
@@ -173,7 +188,7 @@ async def run_evals(base_url: str) -> int:
             try:
                 resp = await client.post(
                     f"{base_url}/triage",
-                    json={"text": case.text},
+                    json={"text": case.text, "order_id": case.order_id},
                 )
                 if resp.status_code == 200:
                     result = resp.json()

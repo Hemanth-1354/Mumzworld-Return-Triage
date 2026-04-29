@@ -3,241 +3,315 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Mumzworld Return Triage</title>
+  <title>Mumzworld Return Triage AI</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
     :root {
       --pink: #e91e8c;
-      --pink-light: #fce4f3;
-      --pink-dark: #b5156d;
-      --gray-50: #fafafa;
-      --gray-100: #f4f4f5;
-      --gray-200: #e4e4e7;
-      --gray-500: #71717a;
-      --gray-700: #3f3f46;
-      --gray-900: #18181b;
-      --green: #16a34a;
-      --blue: #2563eb;
-      --amber: #d97706;
-      --red: #dc2626;
-      --radius: 12px;
+      --pink-hover: #d8157e;
+      --pink-light: #fdf2f8;
+      --bg-gradient: linear-gradient(135deg, #fafafa 0%, #fce4f3 100%);
+      --glass-bg: rgba(255, 255, 255, 0.85);
+      --glass-border: rgba(255, 255, 255, 0.4);
+      --gray-50: #f9fafb;
+      --gray-100: #f3f4f6;
+      --gray-200: #e5e7eb;
+      --gray-500: #6b7280;
+      --gray-700: #374151;
+      --gray-900: #111827;
+      --green: #10b981;
+      --blue: #3b82f6;
+      --amber: #f59e0b;
+      --red: #ef4444;
+      --radius: 16px;
+      --shadow: 0 10px 40px -10px rgba(233, 30, 140, 0.15);
     }
+
     * { box-sizing: border-box; margin: 0; padding: 0; }
+    
     body {
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      background: var(--gray-50);
+      font-family: 'Inter', sans-serif;
+      background: var(--bg-gradient);
       color: var(--gray-900);
       min-height: 100vh;
+      display: flex;
+      flex-direction: column;
     }
 
     /* Header */
     header {
-      background: white;
-      border-bottom: 1px solid var(--gray-200);
-      padding: 16px 24px;
+      background: var(--glass-bg);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--glass-border);
+      padding: 20px 32px;
       display: flex;
       align-items: center;
-      gap: 12px;
+      gap: 16px;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
     }
     .logo-pill {
-      background: var(--pink);
+      background: linear-gradient(135deg, var(--pink) 0%, #ff4b9c 100%);
       color: white;
       font-weight: 700;
-      font-size: 13px;
-      padding: 4px 10px;
+      font-size: 14px;
+      padding: 6px 14px;
       border-radius: 999px;
       letter-spacing: 0.05em;
+      box-shadow: 0 2px 10px rgba(233, 30, 140, 0.3);
     }
-    header h1 { font-size: 17px; font-weight: 600; color: var(--gray-700); }
-    header p { font-size: 13px; color: var(--gray-500); margin-top: 1px; }
+    .header-text h1 { font-size: 20px; font-weight: 700; color: var(--gray-900); letter-spacing: -0.02em; }
+    .header-text p { font-size: 13px; color: var(--gray-500); margin-top: 2px; font-weight: 500; }
 
     /* Layout */
     main {
-      max-width: 900px;
-      margin: 32px auto;
-      padding: 0 16px;
+      max-width: 1000px;
+      width: 100%;
+      margin: 40px auto;
+      padding: 0 20px;
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 20px;
+      gap: 32px;
+      flex: 1;
     }
-    @media (max-width: 640px) { main { grid-template-columns: 1fr; } }
+    @media (max-width: 768px) { main { grid-template-columns: 1fr; } }
 
     .card {
-      background: white;
-      border: 1px solid var(--gray-200);
+      background: var(--glass-bg);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid var(--glass-border);
       border-radius: var(--radius);
-      padding: 24px;
+      padding: 32px;
+      box-shadow: var(--shadow);
+      display: flex;
+      flex-direction: column;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
     }
-    .card h2 { font-size: 14px; font-weight: 600; color: var(--gray-500); text-transform: uppercase; letter-spacing: 0.07em; margin-bottom: 16px; }
+    .card:hover { transform: translateY(-2px); box-shadow: 0 15px 45px -10px rgba(233, 30, 140, 0.2); }
+    .card h2 { font-size: 13px; font-weight: 700; color: var(--gray-500); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 20px; }
 
-    /* Input */
-    textarea {
+    /* Input Fields */
+    .input-group { margin-bottom: 20px; }
+    .input-label { display: block; font-size: 13px; font-weight: 600; color: var(--gray-700); margin-bottom: 8px; }
+    
+    input[type="text"], textarea {
       width: 100%;
+      background: rgba(255, 255, 255, 0.9);
       border: 1px solid var(--gray-200);
-      border-radius: 8px;
-      padding: 12px;
+      border-radius: 12px;
+      padding: 14px 16px;
       font-size: 15px;
       font-family: inherit;
-      resize: vertical;
-      min-height: 130px;
       color: var(--gray-900);
-      transition: border-color 0.15s;
-      line-height: 1.5;
+      transition: all 0.2s ease;
+      box-shadow: inset 0 2px 4px rgba(0,0,0,0.02);
     }
-    textarea:focus { outline: none; border-color: var(--pink); box-shadow: 0 0 0 3px var(--pink-light); }
+    input[type="text"]:focus, textarea:focus {
+      outline: none;
+      border-color: var(--pink);
+      box-shadow: 0 0 0 4px rgba(233, 30, 140, 0.15);
+      background: white;
+    }
+    textarea { resize: vertical; min-height: 140px; line-height: 1.6; }
 
-    .samples { margin-top: 12px; }
-    .samples p { font-size: 12px; color: var(--gray-500); margin-bottom: 6px; }
-    .sample-chips { display: flex; flex-wrap: wrap; gap: 6px; }
+    .samples { margin-top: 16px; }
+    .samples p { font-size: 12px; font-weight: 600; color: var(--gray-500); margin-bottom: 10px; }
+    .sample-chips { display: flex; flex-wrap: wrap; gap: 8px; }
     .chip {
       font-size: 12px;
-      background: var(--gray-100);
+      font-weight: 500;
+      background: white;
       border: 1px solid var(--gray-200);
       border-radius: 999px;
-      padding: 4px 10px;
+      padding: 6px 14px;
       cursor: pointer;
       color: var(--gray-700);
-      transition: background 0.15s;
+      transition: all 0.2s ease;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.05);
     }
-    .chip:hover { background: var(--pink-light); border-color: var(--pink); color: var(--pink-dark); }
+    .chip:hover {
+      background: var(--pink-light);
+      border-color: var(--pink);
+      color: var(--pink);
+      transform: translateY(-1px);
+    }
 
     .submit-btn {
-      margin-top: 14px;
+      margin-top: auto;
       width: 100%;
-      background: var(--pink);
+      background: linear-gradient(135deg, var(--pink) 0%, #ff4b9c 100%);
       color: white;
       border: none;
-      border-radius: 8px;
-      padding: 12px;
-      font-size: 15px;
+      border-radius: 12px;
+      padding: 16px;
+      font-size: 16px;
       font-weight: 600;
       cursor: pointer;
-      transition: background 0.15s;
+      transition: all 0.2s ease;
+      box-shadow: 0 4px 14px rgba(233, 30, 140, 0.4);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 8px;
     }
-    .submit-btn:hover:not(:disabled) { background: var(--pink-dark); }
-    .submit-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+    .submit-btn:hover:not(:disabled) {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(233, 30, 140, 0.5);
+    }
+    .submit-btn:active:not(:disabled) { transform: translateY(0); }
+    .submit-btn:disabled { opacity: 0.6; cursor: not-allowed; box-shadow: none; transform: none; }
 
     /* Result */
-    #result-panel { position: relative; min-height: 200px; }
+    #result-panel { position: relative; min-height: 400px; display: flex; flex-direction: column; }
     .placeholder {
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      height: 200px;
+      flex: 1;
       color: var(--gray-500);
-      font-size: 14px;
-      gap: 8px;
+      font-size: 15px;
+      gap: 16px;
+      text-align: center;
     }
-    .placeholder svg { opacity: 0.3; }
+    .placeholder svg { opacity: 0.2; transform: scale(1.2); }
 
     /* Spinner */
     .spinner-wrap {
-      display: flex; align-items: center; justify-content: center;
-      gap: 10px; padding: 60px 0; color: var(--gray-500); font-size: 14px;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      flex: 1; color: var(--gray-500); font-size: 15px; font-weight: 500; gap: 16px;
     }
     .spinner {
-      width: 22px; height: 22px;
-      border: 3px solid var(--gray-200);
+      width: 32px; height: 32px;
+      border: 3px solid var(--pink-light);
       border-top-color: var(--pink);
       border-radius: 50%;
-      animation: spin 0.7s linear infinite;
+      animation: spin 0.8s cubic-bezier(0.5, 0, 0.5, 1) infinite;
     }
     @keyframes spin { to { transform: rotate(360deg); } }
 
     /* Result content */
-    .result-header { display: flex; align-items: center; gap: 10px; margin-bottom: 16px; flex-wrap: wrap; }
+    .result-content { animation: fadeIn 0.4s ease-out; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+    .result-header { display: flex; align-items: center; gap: 12px; margin-bottom: 24px; flex-wrap: wrap; }
     .badge {
       font-size: 12px; font-weight: 700; letter-spacing: 0.05em;
-      text-transform: uppercase; padding: 4px 10px; border-radius: 999px;
+      text-transform: uppercase; padding: 6px 14px; border-radius: 999px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.05);
     }
-    .badge-refund      { background: #dcfce7; color: #15803d; }
-    .badge-exchange    { background: #dbeafe; color: #1d4ed8; }
-    .badge-store_credit{ background: #fef3c7; color: #b45309; }
-    .badge-escalate    { background: #fee2e2; color: #b91c1c; }
-    .badge-category    { background: var(--gray-100); color: var(--gray-700); }
+    .badge-refund      { background: #dcfce7; color: #166534; border: 1px solid #bbf7d0; }
+    .badge-exchange    { background: #dbeafe; color: #1e40af; border: 1px solid #bfdbfe; }
+    .badge-store_credit{ background: #fef3c7; color: #92400e; border: 1px solid #fde68a; }
+    .badge-escalate    { background: #fee2e2; color: #991b1b; border: 1px solid #fecaca; }
+    .badge-category    { background: white; color: var(--gray-700); border: 1px solid var(--gray-200); }
+    .lang-badge { font-size: 12px; font-weight: 600; color: var(--gray-500); margin-left: auto; background: var(--gray-100); padding: 4px 10px; border-radius: 999px;}
 
     /* Confidence bar */
-    .conf-section { margin-bottom: 14px; }
-    .conf-label { font-size: 12px; color: var(--gray-500); margin-bottom: 4px; display: flex; justify-content: space-between; }
-    .conf-bar { height: 6px; background: var(--gray-200); border-radius: 999px; overflow: hidden; }
-    .conf-fill { height: 100%; border-radius: 999px; background: var(--pink); transition: width 0.5s ease; }
+    .conf-section { margin-bottom: 24px; background: white; padding: 16px; border-radius: 12px; border: 1px solid var(--gray-100); box-shadow: 0 2px 4px rgba(0,0,0,0.02);}
+    .conf-label { font-size: 13px; font-weight: 600; color: var(--gray-700); margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center;}
+    .conf-bar { height: 8px; background: var(--gray-100); border-radius: 999px; overflow: hidden; box-shadow: inset 0 1px 2px rgba(0,0,0,0.05); }
+    .conf-fill { height: 100%; border-radius: 999px; transition: width 1s cubic-bezier(0.22, 1, 0.36, 1); }
 
     /* Reasoning */
-    .reasoning { font-size: 13px; color: var(--gray-700); background: var(--gray-50); border: 1px solid var(--gray-200); border-radius: 8px; padding: 10px 12px; margin-bottom: 14px; line-height: 1.5; }
+    .reasoning { font-size: 14px; color: var(--gray-700); background: rgba(255,255,255,0.6); border-left: 4px solid var(--pink); border-radius: 4px 12px 12px 4px; padding: 16px; margin-bottom: 24px; line-height: 1.6; }
 
     /* Reply sections */
-    .reply-section { margin-bottom: 12px; }
-    .reply-label { font-size: 11px; font-weight: 700; color: var(--gray-500); text-transform: uppercase; letter-spacing: 0.07em; margin-bottom: 5px; }
+    .reply-section { margin-bottom: 20px; }
+    .reply-label { display:flex; align-items: center; gap: 8px; font-size: 12px; font-weight: 700; color: var(--gray-500); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 10px; }
+    .reply-label::before { content: ''; width: 20px; height: 1px; background: var(--gray-200); }
     .reply-text {
-      font-size: 14px; line-height: 1.6; color: var(--gray-700);
-      background: var(--gray-50); border-radius: 8px;
-      padding: 10px 12px; border: 1px solid var(--gray-200);
+      font-size: 15px; line-height: 1.7; color: var(--gray-800);
+      background: white; border-radius: 12px;
+      padding: 16px 20px; border: 1px solid var(--gray-200);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.02);
+      position: relative;
     }
-    .reply-ar { direction: rtl; text-align: right; font-family: "Arial", "Tahoma", sans-serif; }
+    .reply-ar { 
+      direction: rtl; 
+      text-align: right; 
+      font-family: "Arial", "Tahoma", sans-serif; 
+      font-size: 16px;
+    }
 
     /* Error */
-    .error-box { background: #fee2e2; border: 1px solid #fca5a5; border-radius: 8px; padding: 14px; font-size: 14px; color: #b91c1c; }
+    .error-box { background: #fef2f2; border: 1px solid #fecaca; border-radius: 12px; padding: 16px; font-size: 14px; color: #991b1b; animation: fadeIn 0.3s; }
 
     /* Footer */
-    footer { text-align: center; padding: 20px; font-size: 12px; color: var(--gray-500); }
+    footer { text-align: center; padding: 30px; font-size: 13px; font-weight: 500; color: var(--gray-500); }
+    
+    .db-hint { font-size: 11px; color: var(--gray-400); margin-top: 4px; display: block;}
   </style>
 </head>
 <body>
 
 <header>
-  <div>
-    <div style="display:flex;align-items:center;gap:10px;">
-      <span class="logo-pill">mumzworld</span>
-      <h1>Return Triage</h1>
-    </div>
-    <p>AI-powered return classification · English & العربية</p>
+  <div class="logo-pill">mumzworld</div>
+  <div class="header-text">
+    <h1>Return Triage AI</h1>
+    <p>Intelligent intent classification & bilingual resolution</p>
   </div>
 </header>
 
 <main>
   <!-- Input card -->
   <div class="card">
-    <h2>Return Reason</h2>
-    <textarea id="input-text" placeholder="Type the customer's return reason in English or Arabic…
-e.g. &quot;The stroller arrived completely broken&quot;
-أو: &quot;المنتج وصل مكسور ولا يعمل&quot;"></textarea>
+    <h2>Customer Query</h2>
+    
+    <div class="input-group">
+      <label class="input-label" for="order-id">Order ID (Optional)</label>
+      <input type="text" id="order-id" placeholder="e.g. ORD-1001" autocomplete="off" />
+      <span class="db-hint">Mock IDs: ORD-1001 (Valid), ORD-1003 (Out of Policy)</span>
+    </div>
+
+    <div class="input-group" style="flex:1; display:flex; flex-direction:column;">
+      <label class="input-label" for="input-text">Return Reason</label>
+      <textarea id="input-text" placeholder="Type the customer's return reason in English or Arabic…&#10;e.g. &quot;The stroller arrived completely broken&quot;&#10;أو: &quot;المنتج وصل مكسور ولا يعمل&quot;"></textarea>
+    </div>
 
     <div class="samples">
-      <p>Try a sample:</p>
+      <p>Quick Test Cases</p>
       <div class="sample-chips">
-        <span class="chip" onclick="setInput(this)">Stroller arrived broken</span>
-        <span class="chip" onclick="setInput(this)">Wrong size diapers, want exchange</span>
-        <span class="chip" onclick="setInput(this)">Changed my mind</span>
-        <span class="chip" onclick="setInput(this)">Baby got sick from this product</span>
-        <span class="chip" onclick="setInput(this)">المنتج وصل مكسور تمامًا</span>
-        <span class="chip" onclick="setInput(this)">غيرت رأيي لا أحتاجه</span>
-        <span class="chip" onclick="setInput(this)">سأرفع قضية ضد شركتكم</span>
-        <span class="chip" onclick="setInput(this)">asdkjh 123 ??? !!!</span>
+        <span class="chip" onclick="setSample('The stroller arrived broken', '')">Basic Refund</span>
+        <span class="chip" onclick="setSample('Wrong size diapers, want exchange', '')">Exchange</span>
+        <span class="chip" onclick="setSample('This baby formula is untouched but I want to return it', 'ORD-1003')">Policy Violation (ORD-1003)</span>
+        <span class="chip" onclick="setSample('The stroller is kherban and doesn\'t work, please refund my floos', '')">Arabizi</span>
+        <span class="chip" onclick="setSample('المنتج وصل مكسور تمامًا', '')">Arabic Defective</span>
       </div>
     </div>
 
-    <button class="submit-btn" id="submit-btn" onclick="submitTriage()">Triage Return →</button>
+    <button class="submit-btn" id="submit-btn" onclick="submitTriage()">
+      Analyze Return
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+    </button>
   </div>
 
   <!-- Result card -->
   <div class="card" id="result-panel">
     <h2>Triage Result</h2>
+    
     <div class="placeholder" id="placeholder">
-      <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-        <path d="M9 12h6M9 16h6M7 4H4a1 1 0 00-1 1v15a1 1 0 001 1h16a1 1 0 001-1V5a1 1 0 00-1-1h-3"/>
-        <path d="M9 4a1 1 0 011-1h4a1 1 0 011 1v2H9V4z"/>
+      <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+        <path d="M9 12l2 2 4-4"/>
       </svg>
-      Submit a return reason to see the triage decision
+      Awaiting submission...
     </div>
-    <div id="result-content" style="display:none"></div>
+    
+    <div id="result-content" style="display:none; flex:1;"></div>
   </div>
 </main>
 
-<footer>Mumzworld AI Intern Assessment · Track A · Powered by OpenRouter + Qwen 2.5 72B</footer>
+<footer>  </footer>
 
 <script>
-  function setInput(el) {
-    document.getElementById('input-text').value = el.textContent;
+  function setSample(text, orderId) {
+    document.getElementById('input-text').value = text;
+    document.getElementById('order-id').value = orderId;
   }
 
   const RESOLUTION_LABELS = {
@@ -249,22 +323,34 @@ e.g. &quot;The stroller arrived completely broken&quot;
 
   async function submitTriage() {
     const text = document.getElementById('input-text').value.trim();
-    if (!text) { alert('Please enter a return reason.'); return; }
+    const orderId = document.getElementById('order-id').value.trim();
+    
+    if (!text) { 
+      document.getElementById('input-text').focus();
+      return; 
+    }
 
     const btn = document.getElementById('submit-btn');
     btn.disabled = true;
+    btn.innerHTML = 'Analyzing...';
 
     document.getElementById('placeholder').style.display = 'none';
     document.getElementById('result-content').style.display = 'none';
-    document.getElementById('result-content').innerHTML =
-      `<div class="spinner-wrap"><div class="spinner"></div>Analysing…</div>`;
-    document.getElementById('result-content').style.display = 'block';
+    document.getElementById('result-content').innerHTML = `
+      <div class="spinner-wrap">
+        <div class="spinner"></div>
+        Synthesizing decision...
+      </div>`;
+    document.getElementById('result-content').style.display = 'flex';
 
     try {
+      const payload = { text };
+      if (orderId) payload.order_id = orderId;
+
       const res = await fetch('/triage', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ text }),
+        body: JSON.stringify(payload),
       });
       const data = await res.json();
 
@@ -272,59 +358,88 @@ e.g. &quot;The stroller arrived completely broken&quot;
         const msg = typeof data.detail === 'string' ? data.detail
           : data.detail?.error || JSON.stringify(data.detail);
         document.getElementById('result-content').innerHTML =
-          `<div class="error-box">⚠ Error: ${msg}</div>`;
+          `<div class="error-box"><strong>Error:</strong><br/>${msg}</div>`;
         return;
       }
 
       renderResult(data);
     } catch (err) {
       document.getElementById('result-content').innerHTML =
-        `<div class="error-box">⚠ Network error: ${err.message}</div>`;
+        `<div class="error-box"><strong>Network error:</strong><br/>${err.message}</div>`;
     } finally {
       btn.disabled = false;
+      btn.innerHTML = `
+        Analyze Return
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+      `;
     }
   }
 
   function renderResult(d) {
     const confPct = Math.round(d.confidence * 100);
-    const langLabel = { en: '🇬🇧 English', ar: '🇸🇦 Arabic', other: '❓ Unknown' }[d.language_detected] || d.language_detected;
+    const langLabel = { en: '🇬🇧 English', ar: '🇸🇦 Arabic', other: '🌐 Mixed/Other' }[d.language_detected] || d.language_detected;
+    
+    // Confidence color logic
+    let confColor = '#10b981'; // Green
+    let gradient = 'linear-gradient(90deg, #10b981, #34d399)';
+    if (confPct < 50) { 
+      confColor = '#ef4444'; // Red
+      gradient = 'linear-gradient(90deg, #ef4444, #f87171)';
+    } else if (confPct < 80) { 
+      confColor = '#f59e0b'; // Amber
+      gradient = 'linear-gradient(90deg, #f59e0b, #fbbf24)';
+    }
 
     document.getElementById('result-content').innerHTML = `
-      <div class="result-header">
-        <span class="badge badge-${d.resolution}">${RESOLUTION_LABELS[d.resolution] || d.resolution}</span>
-        <span class="badge badge-category">${d.category.replace('_', ' ')}</span>
-        <span style="font-size:12px;color:#71717a;margin-left:auto">${langLabel}</span>
-      </div>
-
-      <div class="conf-section">
-        <div class="conf-label">
-          <span>Confidence</span>
-          <span style="font-weight:600;color:${confPct >= 80 ? '#16a34a' : confPct >= 50 ? '#d97706' : '#dc2626'}">${confPct}%</span>
+      <div class="result-content">
+        <div class="result-header">
+          <span class="badge badge-${d.resolution}">${RESOLUTION_LABELS[d.resolution] || d.resolution}</span>
+          <span class="badge badge-category">${d.category.replace('_', ' ')}</span>
+          <span class="lang-badge">${langLabel}</span>
         </div>
-        <div class="conf-bar"><div class="conf-fill" style="width:${confPct}%"></div></div>
-      </div>
 
-      <div class="reasoning"><strong>Reasoning:</strong> ${escHtml(d.reasoning)}</div>
+        <div class="conf-section">
+          <div class="conf-label">
+            <span>Model Confidence</span>
+            <span style="color:${confColor}">${confPct}%</span>
+          </div>
+          <div class="conf-bar">
+            <div class="conf-fill" style="width:0%; background:${gradient};"></div>
+          </div>
+        </div>
 
-      <div class="reply-section">
-        <div class="reply-label">Suggested Reply — English</div>
-        <div class="reply-text">${escHtml(d.reply_en)}</div>
-      </div>
+        <div class="reasoning">
+          <strong>AI Reasoning:</strong> ${escHtml(d.reasoning)}
+        </div>
 
-      <div class="reply-section">
-        <div class="reply-label">Suggested Reply — العربية</div>
-        <div class="reply-text reply-ar">${escHtml(d.reply_ar)}</div>
+        <div class="reply-section">
+          <div class="reply-label">Suggested Reply — English</div>
+          <div class="reply-text">${escHtml(d.reply_en)}</div>
+        </div>
+
+        <div class="reply-section">
+          <div class="reply-label">Suggested Reply — العربية</div>
+          <div class="reply-text reply-ar">${escHtml(d.reply_ar)}</div>
+        </div>
       </div>
     `;
+
+    // Trigger animation for confidence bar
+    setTimeout(() => {
+      const fill = document.querySelector('.conf-fill');
+      if(fill) fill.style.width = confPct + '%';
+    }, 50);
   }
 
   function escHtml(s) {
     return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
   }
 
-  // Allow Ctrl+Enter to submit
   document.getElementById('input-text').addEventListener('keydown', e => {
     if (e.key === 'Enter' && (e.ctrlKey || e.metaKey)) submitTriage();
+  });
+  document.getElementById('order-id').addEventListener('keydown', e => {
+    if (e.key === 'Enter') document.getElementById('input-text').focus();
   });
 </script>
 </body>
