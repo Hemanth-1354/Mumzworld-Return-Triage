@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Mumzworld Return Triage</title>
+  <style>
+    :root {
+      --pink: #e91e8c;
+      --pink-light: #fce4f3;
+      --pink-dark: #b5156d;
+      --gray-50: #fafafa;
+      --gray-100: #f4f4f5;
+      --gray-200: #e4e4e7;
+      --gray-500: #71717a;
+      --gray-700: #3f3f46;
+      --gray-900: #18181b;
+      --green: #16a34a;
+      --blue: #2563eb;
+      --amber: #d97706;
+      --red: #dc2626;
+      --radius: 12px;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: var(--gray-50);
+      color: var(--gray-900);
+      min-height: 100vh;
+    }
+
+    /* Header */
+    header {
+      background: white;
+      border-bottom: 1px solid var(--gray-200);
+      padding: 16px 24px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .logo-pill {
+      background: var(--pink);
+      color: white;
+      font-weight: 700;
+      font-size: 13px;
+      padding: 4px 10px;
+      border-radius: 999px;
+      letter-spacing: 0.05em;
+    }
+    header h1 { font-size: 17px; font-weight: 600; color: var(--gray-700); }
+    header p { font-size: 13px; color: var(--gray-500); margin-top: 1px; }
+
+    /* Layout */
+    main {
+      max-width: 900px;
+      margin: 32px auto;
+      padding: 0 16px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+    @media (max-width: 640px) { main { grid-template-columns: 1fr; } }
+
+    .card {
+      background: white;
+      border: 1px solid var(--gray-200);
+      border-radius: var(--radius);
+      padding: 24px;
+    }
+    .card h2 { font-size: 14px; font-weight: 600; color: var(--gray-500); text-transform: uppercase; letter-spacing: 0.07em; margin-bottom: 16px; }
+
+    /* Input */
+    textarea {
+      width: 100%;
+      border: 1px solid var(--gray-200);
+      border-radius: 8px;
+      padding: 12px;
+      font-size: 15px;
+      font-family: inherit;
+      resize: vertical;
+      min-height: 130px;
+      color: var(--gray-900);
+      transition: border-color 0.15s;
+      line-height: 1.5;
+    }
+    textarea:focus { outline: none; border-color: var(--pink); box-shadow: 0 0 0 3px var(--pink-light); }
+
+    .samples { margin-top: 12px; }
+    .samples p { font-size: 12px; color: var(--gray-500); margin-bottom: 6px; }
+    .sample-chips { display: flex; flex-wrap: wrap; gap: 6px; }
+    .chip {
+      font-size: 12px;
+      background: var(--gray-100);
+      border: 1px solid var(--gray-200);
+      border-radius: 999px;
+      padding: 4px 10px;
+      cursor: pointer;
+      color: var(--gray-700);
+      transition: background 0.15s;
+    }
+    .chip:hover { background: var(--pink-light); border-color: var(--pink); color: var(--pink-dark); }
+
+    .submit-btn {
+      margin-top: 14px;
+      width: 100%;
+      background: var(--pink);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      padding: 12px;
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.15s;
+    }
+    .submit-btn:hover:not(:disabled) { background: var(--pink-dark); }
+    .submit-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+    /* Result */
+    #result-panel { position: relative; min-height: 200px; }
+    .placeholder {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 200px;
+      color: var(--gray-500);
+      font-size: 14px;
+      gap: 8px;
+    }
+    .placeholder svg { opacity: 0.3; }
+
+    /* Spinner */
+    .spinner-wrap {
+      display: flex; align-items: center; justify-content: center;
+      gap: 10px; padding: 60px 0; color: var(--gray-500); font-size: 14px;
+    }
+    .spinner {
+      width: 22px; height: 22px;
+      border: 3px solid var(--gray-200);
+      border-top-color: var(--pink);
+      border-radius: 50%;
+      animation: spin 0.7s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* Result content */
+    .result-header { display: flex; align-items: center; gap: 10px; margin-bottom: 16px; flex-wrap: wrap; }
+    .badge {
+      font-size: 12px; font-weight: 700; letter-spacing: 0.05em;
+      text-transform: uppercase; padding: 4px 10px; border-radius: 999px;
+    }
+    .badge-refund      { background: #dcfce7; color: #15803d; }
+    .badge-exchange    { background: #dbeafe; color: #1d4ed8; }
+    .badge-store_credit{ background: #fef3c7; color: #b45309; }
+    .badge-escalate    { background: #fee2e2; color: #b91c1c; }
+    .badge-category    { background: var(--gray-100); color: var(--gray-700); }
+
+    /* Confidence bar */
+    .conf-section { margin-bottom: 14px; }
+    .conf-label { font-size: 12px; color: var(--gray-500); margin-bottom: 4px; display: flex; justify-content: space-between; }
+    .conf-bar { height: 6px; background: var(--gray-200); border-radius: 999px; overflow: hidden; }
+    .conf-fill { height: 100%; border-radius: 999px; background: var(--pink); transition: width 0.5s ease; }
+
+    /* Reasoning */
+    .reasoning { font-size: 13px; color: var(--gray-700); background: var(--gray-50); border: 1px solid var(--gray-200); border-radius: 8px; padding: 10px 12px; margin-bottom: 14px; line-height: 1.5; }
+
+    /* Reply sections */
+    .reply-section { margin-bottom: 12px; }
+    .reply-label { font-size: 11px; font-weight: 700; color: var(--gray-500); text-transform: uppercase; letter-spacing: 0.07em; margin-bottom: 5px; }
+    .reply-text {
+      font-size: 14px; line-height: 1.6; color: var(--gray-700);
+      background: var(--gray-50); border-radius: 8px;
+      padding: 10px 12px; border: 1px solid var(--gray-200);
+    }
+    .reply-ar { direction: rtl; text-align: right; font-family: "Arial", "Tahoma", sans-serif; }
+
+    /* Error */
+    .error-box { background: #fee2e2; border: 1px solid #fca5a5; border-radius: 8px; padding: 14px; font-size: 14px; color: #b91c1c; }
+
+    /* Footer */
+    footer { text-align: center; padding: 20px; font-size: 12px; color: var(--gray-500); }
+  </style>
+</head>
+<body>
+
+<header>
+  <div>
+    <div style="display:flex;align-items:center;gap:10px;">
+      <span class="logo-pill">mumzworld</span>
+      <h1>Return Triage</h1>
+    </div>
+    <p>AI-powered return classification · English & العربية</p>
+  </div>
+</header>
+
+<main>
+  <!-- Input card -->
+  <div class="card">
+    <h2>Return Reason</h2>
+    <textarea id="input-text" placeholder="Type the customer's return reason in English or Arabic…
+e.g. &quot;The stroller arrived completely broken&quot;
+أو: &quot;المنتج وصل مكسور ولا يعمل&quot;"></textarea>
+
+    <div class="samples">
+      <p>Try a sample:</p>
+      <div class="sample-chips">
+        <span class="chip" onclick="setInput(this)">Stroller arrived broken</span>
+        <span class="chip" onclick="setInput(this)">Wrong size diapers, want exchange</span>
+        <span class="chip" onclick="setInput(this)">Changed my mind</span>
+        <span class="chip" onclick="setInput(this)">Baby got sick from this product</span>
+        <span class="chip" onclick="setInput(this)">المنتج وصل مكسور تمامًا</span>
+        <span class="chip" onclick="setInput(this)">غيرت رأيي لا أحتاجه</span>
+        <span class="chip" onclick="setInput(this)">سأرفع قضية ضد شركتكم</span>
+        <span class="chip" onclick="setInput(this)">asdkjh 123 ??? !!!</span>
+      </div>
+    </div>
+
+    <button class="submit-btn" id="submit-btn" onclick="submitTriage()">Triage Return →</button>
+  </div>
+
+  <!-- Result card -->
+  <div class="card" id="result-panel">
+    <h2>Triage Result</h2>
+    <div class="placeholder" id="placeholder">
+      <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+        <path d="M9 12h6M9 16h6M7 4H4a1 1 0 00-1 1v15a1 1 0 001 1h16a1 1 0 001-1V5a1 1 0 00-1-1h-3"/>
+        <path d="M9 4a1 1 0 011-1h4a1 1 0 011 1v2H9V4z"/>
+      </svg>
+      Submit a return reason to see the triage decision
+    </div>
+    <div id="result-content" style="display:none"></div>
+  </div>
+</main>
+
+<footer>Mumzworld AI Intern Assessment · Track A · Powered by OpenRouter + Qwen 2.5 72B</footer>
+
+<script>
+  function setInput(el) {
+    document.getElementById('input-text').value = el.textContent;
+  }
+
+  const RESOLUTION_LABELS = {
+    refund: '💚 Full Refund',
+    exchange: '🔵 Exchange',
+    store_credit: '🟡 Store Credit',
+    escalate: '🔴 Escalate',
+  };
+
+  async function submitTriage() {
+    const text = document.getElementById('input-text').value.trim();
+    if (!text) { alert('Please enter a return reason.'); return; }
+
+    const btn = document.getElementById('submit-btn');
+    btn.disabled = true;
+
+    document.getElementById('placeholder').style.display = 'none';
+    document.getElementById('result-content').style.display = 'none';
+    document.getElementById('result-content').innerHTML =
+      `<div class="spinner-wrap"><div class="spinner"></div>Analysing…</div>`;
+    document.getElementById('result-content').style.display = 'block';
+
+    try {
+      const res = await fetch('/triage', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ text }),
+      });
+      const data = await res.json();
+
+      if (!res.ok) {
+        const msg = typeof data.detail === 'string' ? data.detail
+          : data.detail?.error || JSON.stringify(data.detail);
+        document.getElementById('result-content').innerHTML =
+          `<div class="error-box">⚠ Error: ${msg}</div>`;
+        return;
+      }
+
+      renderResult(data);
+    } catch (err) {
+      document.getElementById('result-content').innerHTML =
+        `<div class="error-box">⚠ Network error: ${err.message}</div>`;
+    } finally {
+      btn.disabled = false;
+    }
+  }
+
+  function renderResult(d) {
+    const confPct = Math.round(d.confidence * 100);
+    const langLabel = { en: '🇬🇧 English', ar: '🇸🇦 Arabic', other: '❓ Unknown' }[d.language_detected] || d.language_detected;
+
+    document.getElementById('result-content').innerHTML = `
+      <div class="result-header">
+        <span class="badge badge-${d.resolution}">${RESOLUTION_LABELS[d.resolution] || d.resolution}</span>
+        <span class="badge badge-category">${d.category.replace('_', ' ')}</span>
+        <span style="font-size:12px;color:#71717a;margin-left:auto">${langLabel}</span>
+      </div>
+
+      <div class="conf-section">
+        <div class="conf-label">
+          <span>Confidence</span>
+          <span style="font-weight:600;color:${confPct >= 80 ? '#16a34a' : confPct >= 50 ? '#d97706' : '#dc2626'}">${confPct}%</span>
+        </div>
+        <div class="conf-bar"><div class="conf-fill" style="width:${confPct}%"></div></div>
+      </div>
+
+      <div class="reasoning"><strong>Reasoning:</strong> ${escHtml(d.reasoning)}</div>
+
+      <div class="reply-section">
+        <div class="reply-label">Suggested Reply — English</div>
+        <div class="reply-text">${escHtml(d.reply_en)}</div>
+      </div>
+
+      <div class="reply-section">
+        <div class="reply-label">Suggested Reply — العربية</div>
+        <div class="reply-text reply-ar">${escHtml(d.reply_ar)}</div>
+      </div>
+    `;
+  }
+
+  function escHtml(s) {
+    return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+  }
+
+  // Allow Ctrl+Enter to submit
+  document.getElementById('input-text').addEventListener('keydown', e => {
+    if (e.key === 'Enter' && (e.ctrlKey || e.metaKey)) submitTriage();
+  });
+</script>
+</body>
+</html>

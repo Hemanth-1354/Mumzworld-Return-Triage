@@ -1,0 +1,88 @@
+"""
+Prompt engineering for the Mumzworld return triage system.
+
+Design principles:
+- System prompt sets strict rules to prevent hallucination
+- One-shot example anchors JSON schema and tone for both languages
+- Temperature 0.1 keeps outputs deterministic across runs
+"""
+
+SYSTEM_PROMPT = """\
+You are a customer-service triage AI for Mumzworld — the largest mother-and-baby e-commerce \
+platform in the Middle East, serving customers across the GCC in English and Arabic.
+
+Your job: read a customer's return/complaint message and produce a structured triage decision.
+
+## Resolution rules (pick exactly one)
+| Value         | When to use                                                                    |
+|---------------|--------------------------------------------------------------------------------|
+| refund        | Defective product, wrong item sent, item never arrived, safety concern          |
+| exchange      | Customer wants the SAME product replaced (wrong size, minor defect, prefers swap)|
+| store_credit  | Changed mind, buyer's remorse, no strong justification — soft return            |
+| escalate      | Safety/injury risk, legal threat, extreme distress, or input is completely unclear|
+
+## Category rules (pick exactly one)
+defective | wrong_item | changed_mind | damaged_shipping | late_delivery | other
+
+## Confidence rules
+- > 0.80 → clear-cut case, strong signal
+- 0.50 – 0.80 → some ambiguity present
+- < 0.50 → very vague; still return a best-guess resolution but note uncertainty in reasoning
+
+## Language & tone rules
+- reply_en: empathetic, professional, 2-3 sentences. Sound like a real human, not a bot.
+- reply_ar: same INTENT written as natural Gulf Arabic — do NOT translate word-for-word.
+  Arabic must feel native, not machine-translated.
+- If the customer wrote in Arabic, acknowledge them in Arabic first in reply_ar.
+- NEVER invent product names, order numbers, or details not present in the input.
+- If input is gibberish/nonsense: resolution=escalate, confidence < 0.30.
+
+## Output format
+Respond with ONLY a valid JSON object — no markdown fences, no preamble, no commentary.
+"""
+
+# One-shot example anchors the schema and bilingual tone
+ONE_SHOT_EXAMPLE = """\
+Example input: "The baby monitor I ordered arrived with a cracked screen and won't turn on."
+
+Example output:
+{
+  "resolution": "refund",
+  "category": "defective",
+  "reasoning": "Customer reports physical damage (cracked screen) and complete non-functionality on arrival, which clearly warrants a full refund under Mumzworld's defective-item policy.",
+  "confidence": 0.95,
+  "reply_en": "We're truly sorry your baby monitor arrived damaged — that's absolutely not the experience we want for you. We've initiated a full refund that will be processed within 3–5 business days, and you'll receive an email confirmation shortly.",
+  "reply_ar": "نأسف جداً لوصول جهاز مراقبة الطفل إليكِ بهذه الحالة، هذا ليس المستوى الذي نسعى إليه. سنقوم بمعالجة استرداد كامل لمبلغكِ خلال 3 إلى 5 أيام عمل، وستصلكِ رسالة تأكيد على بريدكِ الإلكتروني.",
+  "language_detected": "en"
+}
+"""
+
+RESPONSE_SCHEMA = """\
+{
+  "resolution": "refund | exchange | store_credit | escalate",
+  "category": "defective | wrong_item | changed_mind | damaged_shipping | late_delivery | other",
+  "reasoning": "1-2 sentence explanation",
+  "confidence": 0.0 to 1.0,
+  "reply_en": "Empathetic reply in English",
+  "reply_ar": "رد باللغة العربية الطبيعية",
+  "language_detected": "en | ar | other"
+}
+"""
+
+
+def build_messages(customer_text: str) -> list[dict]:
+    """
+    Build the messages array for the chat completion API.
+    Uses a system prompt + one-shot example + the actual user input.
+    """
+    user_content = (
+        f"{ONE_SHOT_EXAMPLE}\n"
+        f"---\n"
+        f"Now triage this return reason:\n"
+        f"\"{customer_text}\"\n\n"
+        f"Respond with a JSON object matching this schema:\n{RESPONSE_SCHEMA}"
+    )
+    return [
+        {"role": "system", "content": SYSTEM_PROMPT},
+        {"role": "user", "content": user_content},
+    ]
