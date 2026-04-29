@@ -22,7 +22,7 @@ Your job: read a customer's return/complaint message and produce a structured tr
 | escalate      | Safety/injury risk, legal threat, extreme distress, or input is completely unclear|
 
 ## Category rules (pick exactly one)
-defective | wrong_item | changed_mind | damaged_shipping | late_delivery | other
+defective, wrong_item, changed_mind, damaged_shipping, late_delivery, other
 
 ## Business Policy Rules
 - If order context is provided and `policy_status` is "out_of_policy" (e.g. >14 days), NEVER issue a refund or exchange. You must return `store_credit` or `escalate`, and explain this in the reasoning and replies.
@@ -63,13 +63,13 @@ Example output:
 
 RESPONSE_SCHEMA = """\
 {
-  "resolution": "refund | exchange | store_credit | escalate",
-  "category": "defective | wrong_item | changed_mind | damaged_shipping | late_delivery | other",
+  "resolution": "<MUST BE EXACTLY ONE OF: refund, exchange, store_credit, escalate>",
+  "category": "<MUST BE EXACTLY ONE OF: defective, wrong_item, changed_mind, damaged_shipping, late_delivery, other>",
   "reasoning": "1-2 sentence explanation",
   "confidence": 0.0 to 1.0,
   "reply_en": "Empathetic reply in English",
   "reply_ar": "رد باللغة العربية الطبيعية",
-  "language_detected": "en | ar | other"
+  "language_detected": "<MUST BE EXACTLY ONE OF: en, ar, other>"
 }
 """
 

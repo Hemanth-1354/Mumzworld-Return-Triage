@@ -9,8 +9,7 @@ async def main():
     order_data = MOCK_ORDERS["ORD-1003"].copy()
     order_data["order_id"] = "ORD-1003"
     messages = build_messages(customer_text, order_data)
-
-    print("Sending messages:", messages)
+    # print("Sending messages:", messages)
 
     async with httpx.AsyncClient(timeout=45.0) as client:
         resp = await client.post(
@@ -20,7 +19,7 @@ async def main():
                 "Content-Type": "application/json",
             },
             json={
-                "model": MODEL,
+                "model": "meta-llama/llama-3.3-70b-instruct:free",
                 "messages": messages,
                 "temperature": 0.1,
                 "max_tokens": 900,
