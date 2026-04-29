@@ -2,9 +2,10 @@
 
 **Problem:** Free-text return reason → structured triage decision in EN & AR
 
-🔴 **Live Demo:** [mumzworld-return-triage.onrender.com](https://mumzworld-return-triage.onrender.com)
-📹 **Loom Walkthrough:** [Watch 3-minute demo](https://www.loom.com/share/d8286951d63c43b1bd095232cc7d4064)
-💻 **GitHub:** [Hemanth-1354/Mumzworld-Return-Triage](https://github.com/Hemanth-1354/Mumzworld-Return-Triage)
+**Live Demo:** [mumzworld-return-triage.onrender.com](https://mumzworld-return-triage.onrender.com)
+---
+**Loom Walkthrough:** [Watch 3-minute demo](https://www.loom.com/share/d8286951d63c43b1bd095232cc7d4064)
+
 
 ---
 
