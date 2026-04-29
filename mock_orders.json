@@ -18,7 +18,7 @@
   "ORD-1003": {
     "item_name": "Baby Formula 400g",
     "price_aed": 65,
-    "purchase_days_ago": 35,
+    "purchase_days_ago": 18,
     "return_window_days": 14,
     "policy_status": "out_of_policy",
     "customer_segment": "standard"
@@ -27,6 +27,134 @@
     "item_name": "Wooden Crib",
     "price_aed": 850,
     "purchase_days_ago": 2,
+    "return_window_days": 14,
+    "policy_status": "in_policy",
+    "customer_segment": "standard"
+  },
+  "ORD-1005": {
+    "item_name": "Baby Bottle Set",
+    "price_aed": 110,
+    "purchase_days_ago": 7,
+    "return_window_days": 14,
+    "policy_status": "in_policy",
+    "customer_segment": "vip"
+  },
+  "ORD-1006": {
+    "item_name": "Toddler Car Seat",
+    "price_aed": 950,
+    "purchase_days_ago": 16,
+    "return_window_days": 14,
+    "policy_status": "out_of_policy",
+    "customer_segment": "standard"
+  },
+  "ORD-1007": {
+    "item_name": "Baby Monitor Camera",
+    "price_aed": 499,
+    "purchase_days_ago": 4,
+    "return_window_days": 14,
+    "policy_status": "in_policy",
+    "customer_segment": "vip"
+  },
+  "ORD-1008": {
+    "item_name": "Feeding Chair",
+    "price_aed": 320,
+    "purchase_days_ago": 11,
+    "return_window_days": 14,
+    "policy_status": "in_policy",
+    "customer_segment": "standard"
+  },
+  "ORD-1009": {
+    "item_name": "Baby Blanket Set",
+    "price_aed": 140,
+    "purchase_days_ago": 20,
+    "return_window_days": 14,
+    "policy_status": "out_of_policy",
+    "customer_segment": "standard"
+  },
+  "ORD-1010": {
+    "item_name": "Electric Breast Pump",
+    "price_aed": 680,
+    "purchase_days_ago": 6,
+    "return_window_days": 14,
+    "policy_status": "in_policy",
+    "customer_segment": "vip"
+  },
+  "ORD-1011": {
+    "item_name": "Baby Shampoo Pack",
+    "price_aed": 55,
+    "purchase_days_ago": 3,
+    "return_window_days": 14,
+    "policy_status": "in_policy",
+    "customer_segment": "standard"
+  },
+  "ORD-1012": {
+    "item_name": "Infant Walker",
+    "price_aed": 260,
+    "purchase_days_ago": 13,
+    "return_window_days": 14,
+    "policy_status": "in_policy",
+    "customer_segment": "standard"
+  },
+  "ORD-1013": {
+    "item_name": "Toy Learning Kit",
+    "price_aed": 175,
+    "purchase_days_ago": 21,
+    "return_window_days": 14,
+    "policy_status": "out_of_policy",
+    "customer_segment": "vip"
+  },
+  "ORD-1014": {
+    "item_name": "Twin Baby Stroller",
+    "price_aed": 1450,
+    "purchase_days_ago": 8,
+    "return_window_days": 14,
+    "policy_status": "in_policy",
+    "customer_segment": "vip"
+  },
+  "ORD-1015": {
+    "item_name": "Pacifier Combo Pack",
+    "price_aed": 45,
+    "purchase_days_ago": 9,
+    "return_window_days": 14,
+    "policy_status": "in_policy",
+    "customer_segment": "standard"
+  },
+  "ORD-1016": {
+    "item_name": "Baby Cot Mattress",
+    "price_aed": 390,
+    "purchase_days_ago": 17,
+    "return_window_days": 14,
+    "policy_status": "out_of_policy",
+    "customer_segment": "standard"
+  },
+  "ORD-1017": {
+    "item_name": "Kids Study Table",
+    "price_aed": 520,
+    "purchase_days_ago": 12,
+    "return_window_days": 14,
+    "policy_status": "in_policy",
+    "customer_segment": "vip"
+  },
+  "ORD-1018": {
+    "item_name": "Baby Wipes Mega Pack",
+    "price_aed": 70,
+    "purchase_days_ago": 1,
+    "return_window_days": 14,
+    "policy_status": "in_policy",
+    "customer_segment": "standard"
+  },
+  "ORD-1019": {
+    "item_name": "Portable Cradle",
+    "price_aed": 610,
+    "purchase_days_ago": 19,
+    "return_window_days": 14,
+    "policy_status": "out_of_policy",
+    "customer_segment": "vip"
+  },
+  "ORD-1020": {
+    "item_name": "Baby Bath Tub",
+    "price_aed": 210,
+    "purchase_days_ago": 5,
     "return_window_days": 14,
     "policy_status": "in_policy",
     "customer_segment": "standard"
