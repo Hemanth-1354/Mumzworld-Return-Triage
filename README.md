@@ -1,4 +1,4 @@
-# Mumzworld Return Triage — AI Engineering Intern (Track A)
+# Mumzworld Return Triage
 
 **Problem:** Free-text return reason → structured triage decision in EN & AR
 
